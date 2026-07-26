@@ -8,8 +8,9 @@
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen p-4">
+
     <div x-data="{ 
-        step: 1, activeTab: 0,
+        step: 1, activeTab: 1,
         formData: {
             name: '', class: '', number: '', sPhone: '', pPhone: '',
             uwayId: '', uwayPw: '', jinhakId: '', jinhakPw: '', sameAsUway: false,
@@ -17,7 +18,7 @@
             universities: Array.from({length: 6}, () => ({ name:'', major:'', deadline:'', type:'', count:'', stage1:'', stage2:'', myGrade:'', stats: {avg24:'', avg25:'', avg26:'', com24:'', com25:'', com26:''}, strategy:'', interview:'', stage1Date:'', finalDate:'' }))
         },
         async submitForm() {
-            const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby2DMaLv6PhHSvNyd5181dpGucFJM6drlej_TKcLf8QFaTxPOowsvHy1wyQ4UVGQu9CQg/exec';
+            const WEB_APP_URL = '여기에_웹_앱_URL을_입력하세요';
             try {
                 const response = await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(this.formData) });
                 alert('제출이 완료되었습니다!');
@@ -35,16 +36,16 @@
                 <input x-model="formData.number" placeholder="번호" class="p-2 border rounded">
                 <input x-model="formData.name" placeholder="이름" class="p-2 border rounded">
             </div>
-            <input x-model="formData.sPhone" placeholder="학생 핸드폰" class="w-full p-2 border rounded">
-            <input x-model="formData.pPhone" placeholder="부모 핸드폰" class="w-full p-2 border rounded">
+            <input x-model="formData.sPhone" placeholder="학생 핸드폰 (예: 010-0000-0000)" class="w-full p-2 border rounded">
+            <input x-model="formData.pPhone" placeholder="부모 핸드폰 (예: 010-0000-0000)" class="w-full p-2 border rounded">
             <div class="space-y-2 pt-2">
                 <input x-model="formData.uwayId" placeholder="유웨이 아이디" class="w-full p-2 border rounded">
-                <input x-model="formData.uwayPw" type="password" placeholder="유웨이 비번" class="w-full p-2 border rounded">
+                <input x-model="formData.uwayPw" type="password" placeholder="유웨이 비밀번호" class="w-full p-2 border rounded">
                 <label class="flex items-center gap-2 p-2 bg-gray-50 rounded text-sm">
                     <input type="checkbox" x-model="formData.sameAsUway" @change="if(formData.sameAsUway){formData.jinhakId=formData.uwayId; formData.jinhakPw=formData.uwayPw}"> 진학사 동일
                 </label>
                 <input x-model="formData.jinhakId" placeholder="진학사 아이디" class="w-full p-2 border rounded">
-                <input x-model="formData.jinhakPw" type="password" placeholder="진학사 비번" class="w-full p-2 border rounded">
+                <input x-model="formData.jinhakPw" type="password" placeholder="진학사 비밀번호" class="w-full p-2 border rounded">
             </div>
             <div class="flex justify-end pt-4"><button @click="step = 2" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-bold">다음</button></div>
         </div>
@@ -56,7 +57,7 @@
             
             <template x-for="month in ['june', 'sept']">
                 <div class="border-2 border-gray-200 rounded-xl p-3 bg-gray-50">
-                    <div class="text-sm font-bold text-blue-700 mb-2" x-text="month === 'june' ? '6월 모의평가' : '9월 모의평가'"></div>
+                    <div class="text-sm font-bold text-blue-700 mb-2" x-text="month === 'june' ? '6월 모의평가 등급' : '9월 모의평가 등급'"></div>
                     <div class="grid grid-cols-3 gap-2">
                         <input x-model="formData[month].kor" placeholder="국어" class="p-2 border border-gray-300 rounded text-center">
                         <input x-model="formData[month].mat" placeholder="수리" class="p-2 border border-gray-300 rounded text-center">
@@ -71,30 +72,30 @@
         </div>
 
         <!-- 3단계: 대학 지원 정보 -->
-        <div x-show="step === 3" class="space-y-4">
+        <div x-show="step === 3" class="space-y-3">
             <h2 class="text-lg font-bold border-b pb-2">3단계: 대학 지원 정보</h2>
             <div class="flex overflow-x-auto space-x-1 mb-2">
-                <template x-for="i in 6"><button @click="activeTab = i-1" :class="activeTab === i-1 ? 'bg-blue-600 text-white' : 'bg-gray-200'" class="px-3 py-1 rounded text-sm whitespace-nowrap" x-text="i + '지망'"></button></template>
+                <template x-for="i in 6"><button @click="activeTab = i" :class="activeTab === i ? 'bg-blue-600 text-white' : 'bg-gray-200'" class="px-3 py-1 rounded text-sm whitespace-nowrap" x-text="i + '지망'"></button></template>
             </div>
             <div class="space-y-2 p-3 bg-blue-50 rounded-lg text-sm">
-                <input x-model="formData.universities[activeTab].name" placeholder="희망대학교" class="w-full p-2 border rounded">
-                <input x-model="formData.universities[activeTab].major" placeholder="모집단위" class="w-full p-2 border rounded">
-                <input x-model="formData.universities[activeTab].deadline" placeholder="원서접수마감" class="w-full p-2 border rounded">
-                <input x-model="formData.universities[activeTab].type" placeholder="전형유형" class="w-full p-2 border rounded">
-                <input x-model="formData.universities[activeTab].count" placeholder="모집인원" class="w-full p-2 border rounded">
-                <input x-model="formData.universities[activeTab].stage1" placeholder="1단계 전형방법" class="w-full p-2 border rounded">
-                <input x-model="formData.universities[activeTab].stage2" placeholder="2단계 전형방법" class="w-full p-2 border rounded">
-                <input x-model="formData.universities[activeTab].myGrade" placeholder="대학별 나의 내신등급" class="w-full p-2 border rounded">
+                <input x-model="formData.universities[activeTab-1].name" placeholder="희망대학교 (예: 희망대)" class="w-full p-2 border rounded">
+                <input x-model="formData.universities[activeTab-1].major" placeholder="모집단위 (예: 전기전자공학부)" class="w-full p-2 border rounded">
+                <input x-model="formData.universities[activeTab-1].deadline" placeholder="원서접수마감 (예: 9.15(금) 18:00까지)" class="w-full p-2 border rounded">
+                <input x-model="formData.universities[activeTab-1].type" placeholder="전형유형 (예: 다빈치형인재)" class="w-full p-2 border rounded">
+                <input x-model="formData.universities[activeTab-1].count" placeholder="모집인원 (예: 15명)" class="w-full p-2 border rounded">
+                <input x-model="formData.universities[activeTab-1].stage1" placeholder="1단계 전형방법 (예: 학생부 100%(3배수))" class="w-full p-2 border rounded">
+                <input x-model="formData.universities[activeTab-1].stage2" placeholder="2단계 전형방법 (예: 서류70%+면접30%)" class="w-full p-2 border rounded">
+                <input x-model="formData.universities[activeTab-1].myGrade" placeholder="대학별 나의 내신등급 (예: 2.1)" class="w-full p-2 border rounded">
             </div>
-            <div class="grid grid-cols-3 gap-2">
-                <div class="space-y-1"><input x-model="formData.universities[activeTab].stats.avg24" placeholder="24평균" class="w-full p-1 border rounded text-xs"><input x-model="formData.universities[activeTab].stats.com24" placeholder="24경쟁률" class="w-full p-1 border rounded text-xs"></div>
-                <div class="space-y-1"><input x-model="formData.universities[activeTab].stats.avg25" placeholder="25평균" class="w-full p-1 border rounded text-xs"><input x-model="formData.universities[activeTab].stats.com25" placeholder="25경쟁률" class="w-full p-1 border rounded text-xs"></div>
-                <div class="space-y-1"><input x-model="formData.universities[activeTab].stats.avg26" placeholder="26평균" class="w-full p-1 border rounded text-xs"><input x-model="formData.universities[activeTab].stats.com26" placeholder="26경쟁률" class="w-full p-1 border rounded text-xs"></div>
+            <div class="grid grid-cols-3 gap-2 text-xs">
+                <div class="space-y-1"><input x-model="formData.universities[activeTab-1].stats.avg24" placeholder="24평균" class="w-full p-1 border rounded"><input x-model="formData.universities[activeTab-1].stats.com24" placeholder="24경쟁률" class="w-full p-1 border rounded"></div>
+                <div class="space-y-1"><input x-model="formData.universities[activeTab-1].stats.avg25" placeholder="25평균" class="w-full p-1 border rounded"><input x-model="formData.universities[activeTab-1].stats.com25" placeholder="25경쟁률" class="w-full p-1 border rounded"></div>
+                <div class="space-y-1"><input x-model="formData.universities[activeTab-1].stats.avg26" placeholder="26평균" class="w-full p-1 border rounded"><input x-model="formData.universities[activeTab-1].stats.com26" placeholder="26경쟁률" class="w-full p-1 border rounded"></div>
             </div>
-            <input x-model="formData.universities[activeTab].strategy" placeholder="전략" class="w-full p-2 border rounded text-sm">
-            <input x-model="formData.universities[activeTab].interview" placeholder="논술/면접일" class="w-full p-2 border rounded text-sm">
-            <input x-model="formData.universities[activeTab].stage1Date" placeholder="1단계 합격 발표일" class="w-full p-2 border rounded text-sm">
-            <input x-model="formData.universities[activeTab].finalDate" placeholder="최종 합격자 발표일" class="w-full p-2 border rounded text-sm">
+            <input x-model="formData.universities[activeTab-1].strategy" placeholder="전략 (예: 적정)" class="w-full p-2 border rounded text-sm">
+            <input x-model="formData.universities[activeTab-1].interview" placeholder="논술/면접일 (예: 11.25(토) 10:00)" class="w-full p-2 border rounded text-sm">
+            <input x-model="formData.universities[activeTab-1].stage1Date" placeholder="1단계 합격 발표일 (예: 12.01(금) 15:00)" class="w-full p-2 border rounded text-sm">
+            <input x-model="formData.universities[activeTab-1].finalDate" placeholder="최종 합격자 발표일 (예: 12.18(금) 14:00)" class="w-full p-2 border rounded text-sm">
             <div class="flex justify-between pt-4"><button @click="step = 2" class="bg-gray-400 text-white px-6 py-2 rounded-lg font-bold">이전</button><button @click="submitForm()" class="bg-green-600 text-white px-6 py-2 rounded-lg font-bold">최종 제출</button></div>
         </div>
     </div>
