@@ -17,7 +17,7 @@
             universities: Array.from({length: 6}, () => ({ name:'', major:'', deadline:'', type:'', count:'', stage1:'', stage2:'', myGrade:'', stats: {avg24:'', avg25:'', avg26:'', com24:'', com25:'', com26:''}, strategy:'', interview:'', stage1Date:'', finalDate:'' }))
         },
         async submitForm() {
-            const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzmKkCgLm2rXTFT6-yozDeQQbDloKQadfLmZPdETF8q6K598x1_YZ3B4N20VPjNssnemg/exec';
+            const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby2DMaLv6PhHSvNyd5181dpGucFJM6drlej_TKcLf8QFaTxPOowsvHy1wyQ4UVGQu9CQg/exec';
             try {
                 const response = await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(this.formData) });
                 alert('제출이 완료되었습니다!');
