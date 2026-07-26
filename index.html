@@ -17,25 +17,13 @@
             avgGrade: '', june: {kor:'', mat:'', eng:'', hist:'', tam1:'', tam2:''}, sept: {kor:'', mat:'', eng:'', hist:'', tam1:'', tam2:''},
             universities: Array.from({length: 6}, () => ({ name:'', major:'', deadline:'', type:'', count:'', stage1:'', stage2:'', myGrade:'', stats: {avg24:'', avg25:'', avg26:'', com24:'', com25:'', com26:''}, strategy:'', interview:'', stage1Date:'', finalDate:'' }))
         },
-       /* STREAMING_CHUNK:제출 함수 업데이트 */
-async function submitForm() {
-    // 반, 번호, 이름이 입력되었는지 간단한 확인
-    if (!this.formData.name || !this.formData.class || !this.formData.number) {
-        alert("반, 번호, 이름을 모두 입력해주세요.");
-        return;
-    }
-    
-    if (confirm("최종 제출하시겠습니까? (이미 제출한 기록이 있다면 내용이 수정됩니다.)")) {
-        try {
-            const response = await fetch('YOUR_WEB_APP_URL', { 
-                method: 'POST', 
-                mode: 'no-cors', 
-                body: JSON.stringify(this.formData) 
-            });
-            alert('데이터가 성공적으로 저장되었습니다.');
-        } catch (e) { alert('오류: ' + e.message); }
-    }
-}
+        async submitForm() {
+            const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby2DMaLv6PhHSvNyd5181dpGucFJM6drlej_TKcLf8QFaTxPOowsvHy1wyQ4UVGQu9CQg/exec';
+            try {
+                const response = await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(this.formData) });
+                alert('제출이 완료되었습니다!');
+            } catch (e) { alert('오류: ' + e.message); }
+        }
     }" class="max-w-md mx-auto bg-white p-6 rounded-3xl shadow-lg">
 
         <h1 class="text-xl font-bold mb-6 text-center text-blue-800">2027 수시지원 조사서</h1>
